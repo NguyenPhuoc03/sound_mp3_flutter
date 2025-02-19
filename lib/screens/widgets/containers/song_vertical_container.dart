@@ -5,8 +5,8 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/screens/widgets/containers/loading_container.dart';
 
-class TodayHitsVerticalContainer extends StatelessWidget {
-  const TodayHitsVerticalContainer({super.key});
+class SongVerticalContainer extends StatelessWidget {
+  const SongVerticalContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
