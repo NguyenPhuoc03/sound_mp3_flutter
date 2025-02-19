@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
-import 'package:sound_mp3/screens/widgets/containers/loading_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/music_avatar_circle_container.dart';
 
-class MusicCategoryItemHorizontalContainer extends StatelessWidget {
-  const MusicCategoryItemHorizontalContainer({super.key});
+class PlaylistHorizontalCircleContainer extends StatelessWidget {
+  const PlaylistHorizontalCircleContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +19,12 @@ class MusicCategoryItemHorizontalContainer extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.neutralWhite, width: 1),
-                ),
-                child: ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
-                    placeholder: (context, url) => const LoadingContainer(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                ),
+              const MusicAvatarCircleContainer(
+                imageUrl:
+                    'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
               ),
               Container(
-                padding: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,

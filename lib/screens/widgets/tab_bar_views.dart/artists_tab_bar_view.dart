@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sound_mp3/screens/widgets/containers/music_category_item_horizontal_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/playlist_horizontal_circle_container.dart';
 
 class ArtistsTabBarView extends StatelessWidget {
   const ArtistsTabBarView({super.key});
@@ -15,7 +15,7 @@ class ArtistsTabBarView extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: 40,
         itemBuilder: (context, index) {
-          return MusicCategoryItemHorizontalContainer();
+          return PlaylistHorizontalCircleContainer();
         },
       ),
     );

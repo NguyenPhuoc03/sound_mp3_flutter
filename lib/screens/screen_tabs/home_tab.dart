@@ -5,7 +5,7 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/screens/widgets/app_bars/sliver_app_bar_delegate.dart';
 import 'package:sound_mp3/screens/widgets/containers/carousel_slider_container.dart';
-import 'package:sound_mp3/screens/widgets/containers/song_vertical_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/song_vertical_square_container.dart';
 import 'package:sound_mp3/screens/widgets/tab_bar_views.dart/artists_tab_bar_view.dart';
 import 'package:sound_mp3/screens/widgets/tab_bars/music_category_tab_bar.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -95,7 +95,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                     physics: const BouncingScrollPhysics(),
                     itemCount: 10,
                     itemBuilder: (context, index) {
-                      return const SongVerticalContainer();
+                      return const SongVerticalSquareContainer();
                     },
                   ),
                 ),

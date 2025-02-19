@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
-import 'package:sound_mp3/screens/widgets/containers/playlist_vertical_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/playlist_vertical_square_container.dart';
 
 class PlaylistTab extends StatefulWidget {
   const PlaylistTab({super.key});
@@ -17,7 +17,7 @@ class _PlaylistTabState extends State<PlaylistTab> {
     return Scaffold(
         appBar: AppBar(
           elevation: 5,
-          shadowColor: Colors.white.withOpacity(0.8),
+          shadowColor: AppColors.neutralWhite.withOpacity(0.8),
           leading: IconButton(
             onPressed: () {},
             icon: const Icon(CupertinoIcons.search),
@@ -35,8 +35,8 @@ class _PlaylistTabState extends State<PlaylistTab> {
           ],
         ),
         body: GridView.builder(
-          padding: EdgeInsets.only(top: 32, left: 40, right: 40),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          padding: const EdgeInsets.only(top: 32, left: 40, right: 40),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 48,
             mainAxisSpacing: 32,
@@ -44,7 +44,7 @@ class _PlaylistTabState extends State<PlaylistTab> {
           ),
           itemCount: 10,
           itemBuilder: (context, index) {
-            return PlaylistVerticalContainer();
+            return PlaylistVerticalSquareContainer();
           },
         ));
   }
