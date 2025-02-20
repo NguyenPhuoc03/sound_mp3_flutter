@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
+import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/app_bars/sliver_app_bar_delegate.dart';
 import 'package:sound_mp3/screens/widgets/containers/carousel_slider_container.dart';
 import 'package:sound_mp3/screens/widgets/containers/song_vertical_square_container.dart';
@@ -42,7 +43,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+
+            },
             icon: const Icon(CupertinoIcons.search),
           ),
           title: Text(
@@ -51,7 +54,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.musicPlayerScreen);
+              },
               icon: const Icon(Icons.settings_outlined),
             ),
           ],

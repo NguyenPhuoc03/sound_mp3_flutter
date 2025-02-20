@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
-import 'package:sound_mp3/screens/widgets/containers/music_avatar_circle_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/avatar_circle_container.dart';
 
 class PlaylistHorizontalCircleContainer extends StatelessWidget {
   const PlaylistHorizontalCircleContainer({super.key});
@@ -19,7 +19,7 @@ class PlaylistHorizontalCircleContainer extends StatelessWidget {
         children: [
           Row(
             children: [
-              const MusicAvatarCircleContainer(
+              const AvatarCircleContainer(
                 imageUrl:
                     'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
               ),

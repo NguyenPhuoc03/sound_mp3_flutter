@@ -34,12 +34,10 @@ class _MainScreenState extends State<MainScreen> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        body: SafeArea(
-          child: PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: _tabs,
-          ),
+        body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          children: _tabs,
         ),
         bottomNavigationBar: WaterDropNavBar(
           bottomPadding: 4,

@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/screens/widgets/containers/loading_container.dart';
 
-class MusicAvatarCircleContainer extends StatelessWidget {
-  final int radius;
+class AvatarCircleContainer extends StatelessWidget {
+  final double radius;
   final String imageUrl;
-  const MusicAvatarCircleContainer(
-      {super.key, this.radius = 40, required this.imageUrl});
+  const AvatarCircleContainer(
+      {super.key, this.radius = 40.0, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {

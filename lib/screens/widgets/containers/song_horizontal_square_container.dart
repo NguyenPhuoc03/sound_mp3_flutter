@@ -3,9 +3,9 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/screens/widgets/containers/music_avatar_square_container.dart';
 
-class SongHorizontalContainer extends StatelessWidget {
+class SongHorizontalSquareContainer extends StatelessWidget {
   final String title;
-  const SongHorizontalContainer({super.key, required this.title});
+  const SongHorizontalSquareContainer({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class SongHorizontalContainer extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis),
                 Text(title,
-                    style: AppTypography.captionRegular
+                    style: AppTypography.headlineRegular
                         .copyWith(color: AppColors.neutralWhite),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis),
