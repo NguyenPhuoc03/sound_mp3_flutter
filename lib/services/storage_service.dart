@@ -1,0 +1,1 @@
+//upload avt, ảnh bìa

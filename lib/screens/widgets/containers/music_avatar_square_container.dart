@@ -5,22 +5,26 @@ import 'package:sound_mp3/screens/widgets/containers/loading_container.dart';
 
 class MusicAvatarSquareContainer extends StatelessWidget {
   final double width;
+  final double height;
   final String imageUrl;
   final bool hasShadow;
   final double borderRadius;
   final Color color;
-  const MusicAvatarSquareContainer(
-      {super.key,
-      this.width = 150,
-      required this.imageUrl,
-      this.hasShadow = false,
-      this.borderRadius = 12,
-      this.color = AppColors.neutralWhite});
+  const MusicAvatarSquareContainer({
+    super.key,
+    this.width = 150,
+    this.height = 150,
+    required this.imageUrl,
+    this.hasShadow = false,
+    this.borderRadius = 12,
+    this.color = AppColors.neutralWhite,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: hasShadow
@@ -37,8 +41,10 @@ class MusicAvatarSquareContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
-          placeholder: (context, url) => const LoadingContainer(),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          // placeholder: (context, url) => const LoadingContainer(),
+          errorWidget: (context, url, error) =>
+              Image.asset("assets/music_note_image.jpg"),
+          fit: BoxFit.cover,
         ),
       ),
     );

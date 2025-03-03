@@ -15,8 +15,10 @@ class AvatarCircleContainer extends StatelessWidget {
       child: ClipOval(
         child: CachedNetworkImage(
           imageUrl: imageUrl,
-          placeholder: (context, url) => const LoadingContainer(),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          //placeholder: (context, url) => const LoadingContainer(),
+          errorWidget: (context, url, error) =>
+              Image.asset("assets/music_note_image.jpg"),
+          fit: BoxFit.cover,
         ),
       ),
     );
