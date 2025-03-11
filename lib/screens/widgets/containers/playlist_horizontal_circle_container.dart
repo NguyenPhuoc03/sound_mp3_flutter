@@ -1,56 +1,130 @@
-
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
+import 'package:sound_mp3/data/models/artists.dart';
+import 'package:sound_mp3/data/models/albums.dart';
 import 'package:sound_mp3/screens/widgets/containers/avatar_circle_container.dart';
+import 'package:sound_mp3/screens/widgets/other/error_display.dart';
 
-class PlaylistHorizontalCircleContainer extends StatelessWidget {
-  const PlaylistHorizontalCircleContainer({super.key});
+class PlaylistHorizontalCircleContainer<T> extends StatelessWidget {
+  final T data;
+  final VoidCallback onPress;
+  const PlaylistHorizontalCircleContainer({
+    super.key,
+    required this.data,
+    required this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 8),
-      height: 80,
-      color: Colors.transparent,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              const AvatarCircleContainer(
-                imageUrl:
-                    'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("ArTi",
-                        style: AppTypography.titleRegular
-                            .copyWith(color: AppColors.neutralWhite),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis),
-                    Text("43,875,999 monthly listeners",
-                        style: AppTypography.captionRegular
-                            .copyWith(color: AppColors.neutralWhite),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis),
-                  ],
+    if (data is Artists) {
+      final artist = data as Artists;
+      return _buildArtistContainer(artist);
+    } else if (data is Albums) {
+      final album = data as Albums;
+      return _buildAlbumContainer(album);
+    } else {
+      return ErrorDisplay(
+          message: 'Unsupported data type: ${data.runtimeType}');
+    }
+  }
+
+  Widget _buildArtistContainer(Artists artist) {
+    return GestureDetector(
+      onTap: onPress,
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 8),
+        height: 80,
+        color: Colors.transparent,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                AvatarCircleContainer(
+                  radius: 32,
+                  imageUrl: artist.avatar!,
                 ),
-              ),
-            ],
-          ),
-          const IconButton(
-              onPressed: null,
-              icon: Icon(
-                Icons.arrow_forward_ios,
-                color: AppColors.neutralWhite,
-              )),
-        ],
+                Container(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(artist.name,
+                          style: AppTypography.titleRegular
+                              .copyWith(color: AppColors.neutralWhite),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
+                      Text("${artist.interested} people interested",
+                          style: AppTypography.captionRegular
+                              .copyWith(color: AppColors.neutralWhite),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.neutralWhite,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAlbumContainer(Albums album) {
+    return GestureDetector(
+      onTap: onPress,
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 8),
+        height: 80,
+        color: Colors.transparent,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                AvatarCircleContainer(
+                  radius: 32,
+                  imageUrl: album.image!,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(album.title!,
+                          style: AppTypography.titleRegular
+                              .copyWith(color: AppColors.neutralWhite),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
+                      Text("${album.interested} people interested",
+                          style: AppTypography.captionRegular
+                              .copyWith(color: AppColors.neutralWhite),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.neutralWhite,
+                )),
+          ],
+        ),
       ),
     );
   }

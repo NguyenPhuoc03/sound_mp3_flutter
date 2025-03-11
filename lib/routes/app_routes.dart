@@ -2,6 +2,7 @@
 import 'package:sound_mp3/screens/login_screen.dart';
 import 'package:sound_mp3/screens/main_screen.dart';
 import 'package:sound_mp3/screens/music_player_screen.dart';
+import 'package:sound_mp3/screens/song_list_screen.dart';
 import 'package:sound_mp3/screens/splash_screen.dart';
 
 class AppRoutes {
@@ -9,6 +10,8 @@ class AppRoutes {
   static const String loginScreen = '/login-screen';
   static const String mainScreen = '/main-screen';
   static const String musicPlayerScreen = '/music-player-screen';
+  static const String songListScreen = '/song-list-screen';
+  
 }
 
 final appRoutes = {
@@ -16,4 +19,6 @@ final appRoutes = {
   AppRoutes.loginScreen: (context) => LoginScreen(),
   AppRoutes.mainScreen: (context) => MainScreen(),
   AppRoutes.musicPlayerScreen: (context) => MusicPlayerScreen(),
+  AppRoutes.songListScreen: (context) => SongListScreen(),
+  
 };

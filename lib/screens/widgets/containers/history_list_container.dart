@@ -18,7 +18,6 @@ class HistoryListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String a = "jflsjflksjflsjflkjsklfjsjfs";
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

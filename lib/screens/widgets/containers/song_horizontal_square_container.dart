@@ -1,53 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
+import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/screens/widgets/containers/music_avatar_square_container.dart';
 
 class SongHorizontalSquareContainer extends StatelessWidget {
-  final String title;
-  const SongHorizontalSquareContainer({super.key, required this.title});
+  final VoidCallback onPress;
+  final Songs song;
+  const SongHorizontalSquareContainer({super.key, required this.song, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const MusicAvatarSquareContainer(
-            width: 64,
-            imageUrl:
-                'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("ArTi",
-                    style: AppTypography.titleRegular
-                        .copyWith(color: AppColors.neutralWhite),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
-                Text(title,
-                    style: AppTypography.headlineRegular
-                        .copyWith(color: AppColors.neutralWhite),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
-              ],
+    return InkWell(
+      onTap: onPress,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MusicAvatarSquareContainer(
+              width: 64,
+              height: 64,
+              imageUrl: song.image!,
             ),
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                color: AppColors.neutralWhite,
-              )),
-        ],
+            const SizedBox(
+              width: 8,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(song.title,
+                      style: AppTypography.titleRegular
+                          .copyWith(color: AppColors.neutralWhite),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                  Text(song.artist.join(", "),
+                      style: AppTypography.headlineRegular
+                          .copyWith(color: AppColors.neutralWhite),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
+                ],
+              ),
+            ),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.more_vert,
+                  color: AppColors.neutralWhite,
+                )),
+          ],
+        ),
       ),
     );
   }

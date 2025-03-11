@@ -191,9 +191,10 @@ class _ProfileTabState extends State<ProfileTab> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: 7,
                     itemBuilder: (context, index) {
-                      return const SongHorizontalSquareContainer(
-                        title: 'gg',
-                      );
+                      return Center();
+                      // const SongHorizontalSquareContainer(
+                      //    song: ,
+                      // );
                     }),
               ],
             )),

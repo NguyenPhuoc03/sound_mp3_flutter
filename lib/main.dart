@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/theme.dart';
+import 'package:sound_mp3/mvvm/albums_viewmodel.dart';
+import 'package:sound_mp3/mvvm/artists_viewmodel.dart';
 import 'package:sound_mp3/mvvm/auth_viewmodel.dart';
 import 'package:sound_mp3/mvvm/music_player_viewmodel.dart';
 import 'package:sound_mp3/mvvm/songs_viewmodel.dart';
@@ -19,13 +21,12 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AuthViewmodel()),
         ChangeNotifierProvider(create: (_) => SongsViewmodel()),
         ChangeNotifierProvider(create: (_) => MusicPlayerViewmodel()),
+        ChangeNotifierProvider(create: (_) => ArtistsViewmodel()),
+        ChangeNotifierProvider(create: (_) => AlbumsViewmodel()),
       ],
       child: const MyApp(),
     ),
   );
-}
-
-class SongViewModel {
 }
 
 class MyApp extends StatelessWidget {

@@ -5,6 +5,7 @@ class Albums {
   String? title;
   String? image;
   String? releaseDate;
+  int? interested;
   List<String>? artist;
 
   Albums({
@@ -12,6 +13,7 @@ class Albums {
     this.title,
     this.image,
     this.releaseDate,
+    this.interested,
     this.artist,
   });
 
@@ -24,7 +26,8 @@ class Albums {
       title: data?['title'],
       image: data?['image'],
       releaseDate: data?['releaseDate'],
-      artist: data?['artist'],
+      interested: data?['interested'],
+      artist: List<String>.from(data?['artist'] ?? []),
     );
   }
   Map<String, dynamic> toFirestore() {
@@ -32,6 +35,7 @@ class Albums {
       "title": title ?? "",
       "image": image ?? "",
       "releaseDate": releaseDate ?? "",
+      "interested": interested ?? 0,
       "artist": artist ?? [],
     };
   }

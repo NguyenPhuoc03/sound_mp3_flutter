@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
+import 'package:sound_mp3/mvvm/albums_viewmodel.dart';
+import 'package:sound_mp3/mvvm/artists_viewmodel.dart';
 import 'package:sound_mp3/mvvm/auth_viewmodel.dart';
 import 'package:sound_mp3/mvvm/music_player_viewmodel.dart';
 import 'package:sound_mp3/mvvm/songs_viewmodel.dart';
@@ -11,7 +13,10 @@ import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/app_bars/sliver_app_bar_delegate.dart';
 import 'package:sound_mp3/screens/widgets/containers/carousel_slider_container.dart';
 import 'package:sound_mp3/screens/widgets/containers/song_vertical_square_container.dart';
+import 'package:sound_mp3/screens/widgets/other/error_display.dart';
+import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
 import 'package:sound_mp3/screens/widgets/tab_bar_views.dart/artists_tab_bar_view.dart';
+import 'package:sound_mp3/screens/widgets/tab_bar_views.dart/albums_tab_bar_view.dart';
 import 'package:sound_mp3/screens/widgets/tab_bars/music_category_tab_bar.dart';
 import 'package:sound_mp3/utils/status.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -25,24 +30,15 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   late MusicPlayerViewmodel musicPlayerViewmodel;
-  final Map<Widget, Widget> _categoryMap = {
-    MusicCategoryTabBar(
-      title: "Artists",
-    ): ArtistsTabBarView(),
-    MusicCategoryTabBar(
-      title: "Album",
-    ): ArtistsTabBarView(),
-    MusicCategoryTabBar(
-      title: "Podcast",
-    ): ArtistsTabBarView(),
-    MusicCategoryTabBar(
-      title: "Genre",
-    ): ArtistsTabBarView(),
-  };
+  late Map<Widget, Widget> _categoryMap;
+
   @override
   void initState() {
-    Future.microtask(() =>
-        Provider.of<SongsViewmodel>(context, listen: false).getAllSongs());
+    Future.microtask(() {
+      Provider.of<SongsViewmodel>(context, listen: false).getAllSongs();
+      Provider.of<ArtistsViewmodel>(context, listen: false).getAllArtists();
+      Provider.of<AlbumsViewmodel>(context, listen: false).getAllAlbums();
+    });
     musicPlayerViewmodel =
         Provider.of<MusicPlayerViewmodel>(context, listen: false);
     super.initState();
@@ -50,9 +46,24 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    print("HomeTab rebuilt");
     double width = MediaQuery.of(context).size.width;
     List<int> list = [1, 2, 3, 4, 5];
 
+    _categoryMap = {
+      const MusicCategoryTabBar(
+        title: "Artists",
+      ): const ArtistsTabBarView(),
+      const MusicCategoryTabBar(
+        title: "Album",
+      ): const AlbumsTabBarView(),
+      const MusicCategoryTabBar(
+        title: "Podcast",
+      ): const ArtistsTabBarView(),
+      const MusicCategoryTabBar(
+        title: "Genre",
+      ): const ArtistsTabBarView(),
+    };
     return DefaultTabController(
       length: _categoryMap.length,
       child: Scaffold(
@@ -67,7 +78,10 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              onPressed: _logout,
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.songListScreen);
+              },
+              //_logout,
               icon: const Icon(Icons.settings_outlined),
             ),
           ],
@@ -109,12 +123,10 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                       builder: (context, songViewmodel, child) {
                         switch (songViewmodel.songs.status) {
                           case Status.loading:
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return const LoadingDisplay();
                           case Status.error:
-                            return Center(
-                              child:
-                                  Text(songViewmodel.songs.message.toString()),
+                            return ErrorDisplay(
+                              message: songViewmodel.songs.message.toString(),
                             );
                           case Status.completed:
                             return ListView.builder(
@@ -134,13 +146,14 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                                       context,
                                       AppRoutes.musicPlayerScreen,
                                     );
-                                    print(songViewmodel.songs.data![index]);
                                   },
                                 );
                               },
                             );
                           default:
-                            return Container();
+                            return const ErrorDisplay(
+                              message: "No active",
+                            );
                         }
                       },
                     )),

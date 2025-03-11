@@ -35,7 +35,7 @@ class _PlaylistTabState extends State<PlaylistTab> {
           ],
         ),
         body: GridView.builder(
-          padding: const EdgeInsets.only(top: 32, left: 40, right: 40),
+          padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 48,

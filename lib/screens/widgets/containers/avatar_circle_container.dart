@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:sound_mp3/screens/widgets/containers/loading_container.dart';
 
 class AvatarCircleContainer extends StatelessWidget {
   final double radius;
@@ -12,6 +11,7 @@ class AvatarCircleContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: radius * 2,
+      width: radius * 2,
       child: ClipOval(
         child: CachedNetworkImage(
           imageUrl: imageUrl,
