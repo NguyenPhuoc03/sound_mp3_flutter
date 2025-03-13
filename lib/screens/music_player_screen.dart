@@ -165,7 +165,7 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
                             value.isPlaying
                                 ? Icons.pause_circle_filled
                                 : Icons.play_circle_fill,
-                            color: Colors.green,
+                            color: AppColors.primary,
                             size: 60,
                           ),
                           onPressed: value.pauseOrResume,

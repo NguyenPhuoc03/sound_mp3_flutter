@@ -9,6 +9,7 @@ class Users {
   List<String>? likedArtists;
   List<String>? likedSongs;
   bool? premium;
+  Map<String, List<String>>? history;
 
   Users({
     this.uid,
@@ -19,12 +20,20 @@ class Users {
     this.likedSongs,
     this.premium = false,
     required this.name,
+    this.history,
   });
 
   factory Users.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
     final data = snapshot.data();
+    final historyMap = <String, List<String>>{};
+
+    if (data?['history'] != null) {
+      (data?['history'] as Map<String, dynamic>).forEach((date, songIds) {
+        historyMap[date] = List<String>.from(songIds);
+      });
+    }
     return Users(
       uid: snapshot.id,
       email: data?['email'],
@@ -34,6 +43,7 @@ class Users {
       likedSongs: data?['likedSongs'],
       premium: data?['premium'] ?? false,
       name: data?['name'],
+      history: historyMap,
     );
   }
   Map<String, dynamic> toFirestore() {
@@ -45,6 +55,7 @@ class Users {
       "likedSongs": likedSongs ?? [],
       "premium": premium ?? false,
       "name": name,
+      "history": history ?? {},
     };
   }
 }

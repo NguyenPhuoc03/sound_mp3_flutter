@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/screens/widgets/containers/playlist_horizontal_square_container.dart';
-import 'package:sound_mp3/screens/widgets/containers/song_horizontal_square_container.dart';
 
 class HistoryListContainer extends StatelessWidget {
   final String title;
@@ -34,7 +33,7 @@ class HistoryListContainer extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: itemCount,
             itemBuilder: (context, index) {
-              return PlaylistHorizontalSquareContainer();
+              return const PlaylistHorizontalSquareContainer();
             }),
         if (itemCount < items.length)
           TextButton(

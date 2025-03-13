@@ -129,4 +129,13 @@ class MusicPlayerViewmodel extends ChangeNotifier {
     _audioPlayer.dispose();
     super.dispose();
   }
+
+  void stop() async {
+    await _audioPlayer.stop();
+    _currentIndex = null;
+    _isPlaying = false;
+    _currentDuration = Duration.zero;
+    _totalDuration = Duration.zero;
+    notifyListeners();
+  }
 }

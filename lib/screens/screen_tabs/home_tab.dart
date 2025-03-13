@@ -18,6 +18,7 @@ import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
 import 'package:sound_mp3/screens/widgets/tab_bar_views.dart/artists_tab_bar_view.dart';
 import 'package:sound_mp3/screens/widgets/tab_bar_views.dart/albums_tab_bar_view.dart';
 import 'package:sound_mp3/screens/widgets/tab_bars/music_category_tab_bar.dart';
+import 'package:sound_mp3/services/firestore/songs_service.dart';
 import 'package:sound_mp3/utils/status.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
@@ -79,7 +80,8 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.songListScreen);
+                SongsService service = SongsService();
+                service.getSongHistoryWithDetails("WwwQw8091JbLj55vZTMR");
               },
               //_logout,
               icon: const Icon(Icons.settings_outlined),

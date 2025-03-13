@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/screens/screen_tabs/history_tab.dart';
 import 'package:sound_mp3/screens/screen_tabs/home_tab.dart';
 import 'package:sound_mp3/screens/screen_tabs/playlist_tab.dart';
 import 'package:sound_mp3/screens/screen_tabs/profile_tab.dart';
+import 'package:sound_mp3/screens/widgets/other/mini_player_widget.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
+  final MiniplayerController _miniplayerController = MiniplayerController();
   final List<Widget> _tabs = [
     const HomeTab(),
     const PlaylistTab(),
@@ -34,10 +37,15 @@ class _MainScreenState extends State<MainScreen> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          children: _tabs,
+        body: Stack(
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: _tabs,
+            ),
+            MiniPlayerWidget(controller: _miniplayerController,)
+          ],
         ),
         bottomNavigationBar: WaterDropNavBar(
           bottomPadding: 4,
