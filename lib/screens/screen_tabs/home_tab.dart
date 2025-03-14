@@ -80,8 +80,6 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           actions: [
             IconButton(
               onPressed: () {
-                SongsService service = SongsService();
-                service.getSongHistoryWithDetails("WwwQw8091JbLj55vZTMR");
               },
               //_logout,
               icon: const Icon(Icons.settings_outlined),

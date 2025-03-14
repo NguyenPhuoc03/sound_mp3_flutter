@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
+import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/screens/widgets/containers/playlist_horizontal_square_container.dart';
 
 class HistoryListContainer extends StatelessWidget {
   final String title;
-  final List<String> items;
+  final List<Songs> items;
   final int itemCount;
   final VoidCallback seeMore;
   const HistoryListContainer(
@@ -42,6 +43,7 @@ class HistoryListContainer extends StatelessWidget {
                 style: AppTypography.bodySemiBold
                     .copyWith(color: AppColors.neutralWhite)),
           ),
+        const SizedBox(height: 32),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
 import 'package:sound_mp3/services/firestore/artists_service.dart';
@@ -19,6 +20,16 @@ class SongsViewmodel with ChangeNotifier {
   // getter setter get song by album id
   ApiResponse<List<Songs>> _songsByAlbumId = ApiResponse.loading();
   ApiResponse<List<Songs>> get songsByAlbumId => _songsByAlbumId;
+
+  // getter setter get history song
+  ApiResponse<List<Songs>> _todaySongs = ApiResponse.loading();
+  ApiResponse<List<Songs>> get todaySongs => _todaySongs;
+
+  ApiResponse<List<Songs>> _yesterdaySongs = ApiResponse.loading();
+  ApiResponse<List<Songs>> get yesterdaySongs => _yesterdaySongs;
+
+  ApiResponse<List<Songs>> _pastSongs = ApiResponse.loading();
+  ApiResponse<List<Songs>> get pastSongs => _pastSongs;
 
   // lay tat ca song
   Future<void> getAllSongs() async {
@@ -74,9 +85,45 @@ class SongsViewmodel with ChangeNotifier {
     }
   }
 
+  // lay song trong history
+  Future<void> getHistorySongs(String userId) async {
+    _todaySongs = ApiResponse.loading();
+    _yesterdaySongs = ApiResponse.loading();
+    _pastSongs = ApiResponse.loading();
+    notifyListeners();
 
-  
-  
+    try {
+      String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      String yesterday = DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().subtract(const Duration(days: 1)));
+      DateTime threeDaysAgo = DateTime.now().subtract(const Duration(days: 2));
+
+      Map<String, List<Songs>> mapHistorySong =
+          await _songsService.getSongHistoryWithDetails(userId);
+
+      final todaySongs =
+          await _convertArtistIdsToNames(mapHistorySong[today] ?? []);
+      final yesterdaySongs =
+          await _convertArtistIdsToNames(mapHistorySong[yesterday] ?? []);
+      final pastSongs = [];
+      // Gom cac bai hat cua 3 ngay truoc tro ve truoc
+      mapHistorySong.forEach((date, songs) {
+        DateTime parsedDate = DateTime.parse(date);
+        if (parsedDate.isBefore(threeDaysAgo)) {
+          pastSongs.addAll(songs);
+        }
+      });
+
+      _todaySongs = ApiResponse.completed(todaySongs);
+      _yesterdaySongs = ApiResponse.completed(yesterdaySongs);
+      _pastSongs = ApiResponse.completed(pastSongs.cast<Songs>());
+    } catch (error) {
+      _songsByAlbumId = ApiResponse.error(error.toString());
+    } finally {
+      notifyListeners();
+    }
+  }
+
   //! convert song(artist id) -> song (artist name)
   Future<List<Songs>> _convertArtistIdsToNames(List<Songs> songs) async {
     for (var song in songs) {
