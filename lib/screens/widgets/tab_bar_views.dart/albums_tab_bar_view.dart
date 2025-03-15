@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/data/models/albums.dart';
-import 'package:sound_mp3/mvvm/albums_viewmodel.dart';
-import 'package:sound_mp3/mvvm/songs_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/albums_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/containers/playlist_horizontal_circle_container.dart';
 import 'package:sound_mp3/screens/widgets/other/error_display.dart';
 import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
-import 'package:sound_mp3/utils/filter_types.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
 import 'package:sound_mp3/utils/status.dart';
 
 class AlbumsTabBarView extends StatelessWidget {
@@ -49,8 +49,8 @@ class AlbumsTabBarView extends StatelessWidget {
                           context,
                           AppRoutes.songListScreen,
                           arguments: {
-                            FilterTypes.key: FilterTypes.album,
-                            FilterTypes.value: albumId
+                            AppStrings.key: AppStrings.album,
+                            AppStrings.value: albumId
                           },
                         );
                       },

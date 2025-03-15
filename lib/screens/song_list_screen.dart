@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/data/models/songs.dart';
-import 'package:sound_mp3/mvvm/music_player_viewmodel.dart';
-import 'package:sound_mp3/mvvm/songs_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/containers/song_horizontal_square_container.dart';
 import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
 import 'package:sound_mp3/screens/widgets/other/mini_player_widget.dart';
-import 'package:sound_mp3/utils/filter_types.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
 
 class SongListScreen extends StatefulWidget {
   const SongListScreen({
@@ -34,8 +34,8 @@ class _SongListScreenState extends State<SongListScreen> {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
-      type = args[FilterTypes.key];
-      value = args[FilterTypes.value];
+      type = args[AppStrings.key];
+      value = args[AppStrings.value];
     }
 
     //! xu li neu artist_tab_bar_view chua goi duoc provider
@@ -78,10 +78,10 @@ class _SongListScreenState extends State<SongListScreen> {
                   builder: (context, songViewmodel, child) {
                     List<Songs> songs = [];
 
-                    if (type == FilterTypes.artist &&
+                    if (type == AppStrings.artist &&
                         songViewmodel.songsByArtistId.data != null) {
                       songs = songViewmodel.songsByArtistId.data!;
-                    } else if (type == FilterTypes.album &&
+                    } else if (type == AppStrings.album &&
                         songViewmodel.songsByAlbumId.data != null) {
                       songs = songViewmodel.songsByAlbumId.data!;
                     } else {}

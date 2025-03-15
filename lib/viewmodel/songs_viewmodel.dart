@@ -105,18 +105,21 @@ class SongsViewmodel with ChangeNotifier {
           await _convertArtistIdsToNames(mapHistorySong[today] ?? []);
       final yesterdaySongs =
           await _convertArtistIdsToNames(mapHistorySong[yesterday] ?? []);
-      final pastSongs = [];
+      final threeAgoDaySongs = [];
       // Gom cac bai hat cua 3 ngay truoc tro ve truoc
       mapHistorySong.forEach((date, songs) {
         DateTime parsedDate = DateTime.parse(date);
         if (parsedDate.isBefore(threeDaysAgo)) {
-          pastSongs.addAll(songs);
+          threeAgoDaySongs.addAll(songs);
         }
       });
 
+      final pastSongs =
+          await _convertArtistIdsToNames(threeAgoDaySongs.cast<Songs>());
+
       _todaySongs = ApiResponse.completed(todaySongs);
       _yesterdaySongs = ApiResponse.completed(yesterdaySongs);
-      _pastSongs = ApiResponse.completed(pastSongs.cast<Songs>());
+      _pastSongs = ApiResponse.completed(pastSongs);
     } catch (error) {
       _songsByAlbumId = ApiResponse.error(error.toString());
     } finally {

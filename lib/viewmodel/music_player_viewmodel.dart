@@ -1,11 +1,17 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sound_mp3/data/models/songs.dart';
+import 'package:sound_mp3/services/firestore/users_service.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
+import 'package:sound_mp3/utils/shared_prefs_helper.dart';
+import 'package:sound_mp3/utils/time_format.dart';
 
 class MusicPlayerViewmodel extends ChangeNotifier {
+  final UsersService _usersService = UsersService();
   List<Songs> _playlist = [];
   int? _currentIndex;
   bool _isPlaying = false;
+
   // audio player
   final AudioPlayer _audioPlayer = AudioPlayer();
   //durations
@@ -48,6 +54,11 @@ class MusicPlayerViewmodel extends ChangeNotifier {
     await _audioPlayer.setSourceUrl(source);
     await _audioPlayer.resume();
     _isPlaying = true;
+
+    // lay uid tu Shared Prefs và add vao song history 
+    String uid = await SharedPrefsHelper.getUserId(AppStrings.uid);
+    await _usersService.addSongHistory(
+        uid, formatDateYMD(DateTime.now()), _playlist[_currentIndex!].id!);
     notifyListeners();
   }
 

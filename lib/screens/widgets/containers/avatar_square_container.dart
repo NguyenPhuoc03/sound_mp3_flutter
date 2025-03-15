@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 
-class MusicAvatarSquareContainer extends StatelessWidget {
+class AvatarSquareContainer extends StatelessWidget {
   final double width;
   final double height;
   final String imageUrl;
   final bool hasShadow;
   final double borderRadius;
   final Color color;
-  const MusicAvatarSquareContainer({
+  const AvatarSquareContainer({
     super.key,
     this.width = 150,
     this.height = 150,

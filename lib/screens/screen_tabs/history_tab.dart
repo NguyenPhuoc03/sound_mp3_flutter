@@ -4,8 +4,8 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
-import 'package:sound_mp3/mvvm/auth_viewmodel.dart';
-import 'package:sound_mp3/mvvm/songs_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/auth_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/screens/widgets/containers/history_list_container.dart';
 import 'package:sound_mp3/screens/widgets/other/empty_display.dart';
 import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
@@ -67,7 +67,7 @@ class _HistoryTabState extends State<HistoryTab> {
               if (songViewmodel.todaySongs.data == null ||
                   songViewmodel.yesterdaySongs.data == null ||
                   songViewmodel.pastSongs.data == null) {
-                return Center(child: CircularProgressIndicator());
+                return const LoadingDisplay();
               }
 
               // tao sanh sach bai hat
@@ -121,7 +121,7 @@ class _HistoryTabState extends State<HistoryTab> {
                       ? HistoryListContainer(
                           title: 'Older',
                           items: pastSongs,
-                          itemCount: 5,
+                          itemCount: threeDayAgoCount,
                           seeMore: () {
                             setState(() {
                               threeDayAgoCount =

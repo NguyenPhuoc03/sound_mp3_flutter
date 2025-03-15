@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/data/models/artists.dart';
-import 'package:sound_mp3/mvvm/artists_viewmodel.dart';
-import 'package:sound_mp3/mvvm/songs_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/artists_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/containers/playlist_horizontal_circle_container.dart';
 import 'package:sound_mp3/screens/widgets/other/error_display.dart';
 import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
-import 'package:sound_mp3/utils/filter_types.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
 import 'package:sound_mp3/utils/status.dart';
 
 class ArtistsTabBarView extends StatelessWidget {
@@ -44,11 +44,14 @@ class ArtistsTabBarView extends StatelessWidget {
                         await Provider.of<SongsViewmodel>(context,
                                 listen: false)
                             .getSongsByArtistId(artId);
-  
+
                         Navigator.pushNamed(
                           context,
                           AppRoutes.songListScreen,
-                          arguments: {FilterTypes.key: FilterTypes.artist, FilterTypes.value: artId},
+                          arguments: {
+                            AppStrings.key: AppStrings.artist,
+                            AppStrings.value: artId
+                          },
                         );
                       },
                     );

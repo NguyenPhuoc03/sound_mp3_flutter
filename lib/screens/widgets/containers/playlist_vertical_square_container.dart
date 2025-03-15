@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
-import 'package:sound_mp3/screens/widgets/containers/music_avatar_square_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/avatar_square_container.dart';
 
 class PlaylistVerticalSquareContainer extends StatelessWidget {
   const PlaylistVerticalSquareContainer({super.key});
@@ -16,7 +16,7 @@ class PlaylistVerticalSquareContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const MusicAvatarSquareContainer(
+          const AvatarSquareContainer(
             imageUrl:
                 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
             hasShadow: true,

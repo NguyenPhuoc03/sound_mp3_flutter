@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/data/models/songs.dart';
-import 'package:sound_mp3/screens/widgets/containers/music_avatar_square_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/avatar_square_container.dart';
 
 class SongVerticalSquareContainer extends StatelessWidget {
   final VoidCallback onPress;
@@ -23,7 +23,7 @@ class SongVerticalSquareContainer extends StatelessWidget {
           children: [
             Stack(
               children: [
-                MusicAvatarSquareContainer(
+                AvatarSquareContainer(
                   width: 128,
                   height: 128,
                   imageUrl: song.image!,

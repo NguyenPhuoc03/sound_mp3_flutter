@@ -3,7 +3,7 @@ import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
-import 'package:sound_mp3/mvvm/music_player_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/containers/avatar_circle_container.dart';
 

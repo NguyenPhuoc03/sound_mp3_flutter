@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/data/models/songs.dart';
-import 'package:sound_mp3/screens/widgets/containers/music_avatar_square_container.dart';
+import 'package:sound_mp3/screens/widgets/containers/avatar_square_container.dart';
 
 class SongHorizontalSquareContainer extends StatelessWidget {
   final VoidCallback onPress;
@@ -19,7 +19,7 @@ class SongHorizontalSquareContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MusicAvatarSquareContainer(
+            AvatarSquareContainer(
               width: 64,
               height: 64,
               imageUrl: song.image!,

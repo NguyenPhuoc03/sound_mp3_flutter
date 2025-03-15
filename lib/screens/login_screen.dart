@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
-import 'package:sound_mp3/mvvm/auth_viewmodel.dart';
+import 'package:sound_mp3/viewmodel/auth_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 
 class LoginScreen extends StatefulWidget {

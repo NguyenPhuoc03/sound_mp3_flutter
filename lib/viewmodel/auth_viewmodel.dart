@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sound_mp3/services/auth_service.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
+import 'package:sound_mp3/utils/shared_prefs_helper.dart';
 
 class AuthViewmodel with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -24,6 +26,7 @@ class AuthViewmodel with ChangeNotifier {
 
     try {
       _currentUser = await _authService.loginWithEmail(email, password);
+      await SharedPrefsHelper.saveUserId(AppStrings.uid, _currentUser!.uid);
     } catch (e) {
       print("Login error: $e");
     } finally {
@@ -48,6 +51,7 @@ class AuthViewmodel with ChangeNotifier {
 
   Future<void> logout() async {
     await _authService.logout();
+    await SharedPrefsHelper.removeUserId(AppStrings.uid);
     _currentUser = null;
     notifyListeners();
   }

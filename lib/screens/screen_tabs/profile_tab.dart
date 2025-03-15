@@ -5,7 +5,6 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/screens/widgets/containers/avatar_circle_container.dart';
 import 'package:sound_mp3/screens/widgets/containers/icon_button_container.dart';
-import 'package:sound_mp3/screens/widgets/containers/song_horizontal_square_container.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
