@@ -8,6 +8,7 @@ import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sound_mp3/viewmodel/users_viewmodel.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -23,6 +24,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => MusicPlayerViewmodel()),
         ChangeNotifierProvider(create: (_) => ArtistsViewmodel()),
         ChangeNotifierProvider(create: (_) => AlbumsViewmodel()),
+        ChangeNotifierProvider(create: (_) => UsersViewmodel()),
       ],
       child: const MyApp(),
     ),

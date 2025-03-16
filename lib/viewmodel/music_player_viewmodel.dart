@@ -11,6 +11,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
   List<Songs> _playlist = [];
   int? _currentIndex;
   bool _isPlaying = false;
+  bool _isLiked = false;
 
   // audio player
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -24,13 +25,20 @@ class MusicPlayerViewmodel extends ChangeNotifier {
   bool get isPlaying => _isPlaying;
   Duration get currentDuration => _currentDuration;
   Duration get totalDuration => _totalDuration;
+  bool get isLiked => _isLiked;
 
   //setter
   set currentIndex(int? newIndex) {
     _currentIndex = newIndex;
 
     if (newIndex != null) {
+      // Gọi getIsLikedSong khi bài hát thay đổi
+      SharedPrefsHelper.getUserId(AppStrings.uid).then((uid) {
+        getIsLikedSong(uid, _playlist[newIndex].id!);
+      });
       play();
+
+      
     }
     notifyListeners();
   }
@@ -55,7 +63,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
     await _audioPlayer.resume();
     _isPlaying = true;
 
-    // lay uid tu Shared Prefs và add vao song history 
+    // lay uid tu Shared Prefs và add vao song history
     String uid = await SharedPrefsHelper.getUserId(AppStrings.uid);
     await _usersService.addSongHistory(
         uid, formatDateYMD(DateTime.now()), _playlist[_currentIndex!].id!);
@@ -99,6 +107,10 @@ class MusicPlayerViewmodel extends ChangeNotifier {
       } else {
         _currentIndex = 0;
       }
+      // Gọi getIsLikedSong khi bài hát thay đổi
+      SharedPrefsHelper.getUserId(AppStrings.uid).then((uid) {
+        getIsLikedSong(uid, _playlist[_currentIndex!].id!);
+      });
       play();
     }
     notifyListeners();
@@ -114,6 +126,10 @@ class MusicPlayerViewmodel extends ChangeNotifier {
       } else {
         _currentIndex = _playlist.length - 1;
       }
+      // Gọi getIsLikedSong khi bài hát thay đổi
+      SharedPrefsHelper.getUserId(AppStrings.uid).then((uid) {
+        getIsLikedSong(uid, _playlist[_currentIndex!].id!);
+      });
       play();
     }
   }
@@ -148,5 +164,15 @@ class MusicPlayerViewmodel extends ChangeNotifier {
     _currentDuration = Duration.zero;
     _totalDuration = Duration.zero;
     notifyListeners();
+  }
+
+  Future<void> getIsLikedSong(String userId, String songId) async {
+    try {
+      _isLiked = await _usersService.isSongLiked(userId, songId);
+    } catch (error) {
+      print("err in viewmodel");
+    } finally {
+      notifyListeners();
+    }
   }
 }

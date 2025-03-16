@@ -44,12 +44,6 @@ class _HistoryTabState extends State<HistoryTab> {
             style:
                 AppTypography.titleBold.copyWith(color: AppColors.neutralWhite),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_horiz),
-            ),
-          ],
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.only(top: 32, left: 32, right: 32),

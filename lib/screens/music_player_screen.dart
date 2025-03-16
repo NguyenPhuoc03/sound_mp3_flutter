@@ -79,8 +79,15 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
                               ),
                               IconButton(
                                 onPressed: () {},
-                                icon: const Icon(CupertinoIcons.heart_fill),
-                                color: AppColors.neutralWhite,
+                                icon: value.isLiked
+                                    ? const Icon(
+                                        CupertinoIcons.heart_fill,
+                                        color: Colors.red,
+                                      )
+                                    : const Icon(
+                                        CupertinoIcons.heart,
+                                        color: AppColors.neutralWhite,
+                                      ),
                               )
                             ],
                           ))
@@ -122,13 +129,13 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                formatTime(value.currentDuration),
+                                formatTimerPlaying(value.currentDuration),
                                 style: AppTypography.captionRegular.copyWith(
                                   color: AppColors.neutralWhite,
                                 ),
                               ),
                               Text(
-                                formatTime(value.totalDuration),
+                                formatTimerPlaying(value.totalDuration),
                                 style: AppTypography.captionRegular.copyWith(
                                   color: AppColors.neutralWhite,
                                 ),

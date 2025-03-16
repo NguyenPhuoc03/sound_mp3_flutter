@@ -6,7 +6,6 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/viewmodel/albums_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/artists_viewmodel.dart';
-import 'package:sound_mp3/viewmodel/auth_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
@@ -78,9 +77,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-              },
-              //_logout,
+              onPressed: () {},
               icon: const Icon(Icons.settings_outlined),
             ),
           ],
@@ -191,14 +188,5 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
         ),
       ),
     );
-  }
-
-  //logout in setting button
-  Future<void> _logout() async {
-    final authViewModel = Provider.of<AuthViewmodel>(context, listen: false);
-    await authViewModel.logout();
-    if (authViewModel.currentUser == null) {
-      Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-    }
   }
 }
