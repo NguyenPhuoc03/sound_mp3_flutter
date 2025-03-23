@@ -42,7 +42,7 @@ class FavoriteTransactionServices {
         DocumentSnapshot<Map<String, dynamic>> songSnapshot =
             await transaction.get(songRef);
         if (!songSnapshot.exists) {
-          throw Exception("Bài hát không tồn tại!");
+          throw Exception("Song is not exists");
         }
 
         // Xóa bài hát khỏi danh sách likedSongs của user

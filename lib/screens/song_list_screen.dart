@@ -89,25 +89,20 @@ class _SongListScreenState extends State<SongListScreen> {
                     return songs.isEmpty
                         ? const LoadingDisplay()
                         : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
                             itemCount: songs.length,
                             itemBuilder: (context, index) {
-                              return ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: songs.length,
-                                itemBuilder: (context, index) {
-                                  return SongHorizontalSquareContainer(
-                                    song: songs[index],
-                                    onPress: () {
-                                      musicPlayerViewmodel.playlist = songs;
-                                      musicPlayerViewmodel.currentIndex = index;
+                              return SongHorizontalSquareContainer(
+                                song: songs[index],
+                                onPress: () {
+                                  musicPlayerViewmodel.playlist = songs;
+                                  musicPlayerViewmodel.currentIndex = index;
 
-                                      Navigator.pushNamed(
-                                        context,
-                                        AppRoutes.musicPlayerScreen,
-                                      );
-                                    },
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.musicPlayerScreen,
                                   );
                                 },
                               );

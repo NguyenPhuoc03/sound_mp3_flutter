@@ -4,7 +4,6 @@ import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
-import 'package:sound_mp3/viewmodel/auth_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/screens/widgets/containers/history_list_container.dart';
 import 'package:sound_mp3/screens/widgets/other/empty_display.dart';
@@ -25,10 +24,8 @@ class _HistoryTabState extends State<HistoryTab> {
   @override
   void initState() {
     Future.microtask(() {
-      final userCredential =
-          Provider.of<AuthViewmodel>(context, listen: false).currentUser;
       Provider.of<SongsViewmodel>(context, listen: false)
-          .getHistorySongs(userCredential!.uid);
+          .getHistorySongs();
     });
     super.initState();
   }

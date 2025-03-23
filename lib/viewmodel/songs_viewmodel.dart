@@ -4,6 +4,8 @@ import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
 import 'package:sound_mp3/services/firestore/artists_service.dart';
 import 'package:sound_mp3/services/firestore/songs_service.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
+import 'package:sound_mp3/utils/shared_prefs_helper.dart';
 
 class SongsViewmodel with ChangeNotifier {
   final SongsService _songsService = SongsService();
@@ -30,6 +32,10 @@ class SongsViewmodel with ChangeNotifier {
 
   ApiResponse<List<Songs>> _pastSongs = ApiResponse.loading();
   ApiResponse<List<Songs>> get pastSongs => _pastSongs;
+
+  // getter setter search song
+  ApiResponse<List<Songs>> _searchResults = ApiResponse.loading();
+  ApiResponse<List<Songs>> get searchResults => _searchResults;
 
   // lay tat ca song
   Future<void> getAllSongs() async {
@@ -86,7 +92,9 @@ class SongsViewmodel with ChangeNotifier {
   }
 
   // lay song trong history
-  Future<void> getHistorySongs(String userId) async {
+  Future<void> getHistorySongs() async {
+    // su dung userid duoc luu trong shared pref
+    String userId = await SharedPrefsHelper.getUserId(AppStrings.uid);
     _todaySongs = ApiResponse.loading();
     _yesterdaySongs = ApiResponse.loading();
     _pastSongs = ApiResponse.loading();
@@ -122,6 +130,28 @@ class SongsViewmodel with ChangeNotifier {
       _pastSongs = ApiResponse.completed(pastSongs);
     } catch (error) {
       _songsByAlbumId = ApiResponse.error(error.toString());
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  // search name
+  Future<void> searchSongs(String query) async {
+    try {
+      List<Songs> list = [];
+      if (query.isEmpty) {
+        _searchResults = ApiResponse.completed(list);
+
+        print("vsvsv $list");
+        notifyListeners();
+        return;
+      }
+      final songsTemp = await _songsService.getSongBySearchName(query);
+      list = await _convertArtistIdsToNames(songsTemp);
+
+      _searchResults = ApiResponse.completed(list);
+    } catch (error) {
+      _searchResults = ApiResponse.error(error.toString());
     } finally {
       notifyListeners();
     }

@@ -68,7 +68,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.searchScreen);
+            },
             icon: const Icon(CupertinoIcons.search),
           ),
           title: Text(
@@ -77,7 +79,9 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.artistScreen);
+              },
               icon: const Icon(Icons.settings_outlined),
             ),
           ],

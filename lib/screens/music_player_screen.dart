@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
+import 'package:sound_mp3/viewmodel/favorite_transaction_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/screens/widgets/containers/avatar_circle_container.dart';
 import 'package:sound_mp3/utils/time_format.dart';
@@ -78,11 +79,23 @@ class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Provider.of<FavoriteTransactionViewmodel>(
+                                          context,
+                                          listen: false)
+                                      .toggleFavoritedSong(
+                                          value.isLiked,
+                                          value.playlist[value.currentIndex!]
+                                              .id!);
+
+                                  // sau khi update tren firebase thi thay doi trang thai button
+                                  //su dung setter trong viewmodel
+                                  value.isLiked = !value.isLiked;
+                                },
                                 icon: value.isLiked
                                     ? const Icon(
                                         CupertinoIcons.heart_fill,
-                                        color: Colors.red,
+                                        color: AppColors.primary,
                                       )
                                     : const Icon(
                                         CupertinoIcons.heart,

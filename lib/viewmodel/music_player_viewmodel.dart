@@ -33,18 +33,19 @@ class MusicPlayerViewmodel extends ChangeNotifier {
 
     if (newIndex != null) {
       // Gọi getIsLikedSong khi bài hát thay đổi
-      SharedPrefsHelper.getUserId(AppStrings.uid).then((uid) {
-        getIsLikedSong(uid, _playlist[newIndex].id!);
-      });
+      getIsLikedSong(_playlist[_currentIndex!].id!);
       play();
-
-      
     }
     notifyListeners();
   }
 
   set playlist(List<Songs> newPlaylist) {
     _playlist = newPlaylist;
+    notifyListeners();
+  }
+
+  set isLiked(bool newValue) {
+    _isLiked = newValue;
     notifyListeners();
   }
 
@@ -100,7 +101,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
   }
 
   //play next song
-  void playNextSong() {
+  void playNextSong() async {
     if (_currentIndex != null) {
       if (_currentIndex! < _playlist.length - 1) {
         _currentIndex = _currentIndex! + 1;
@@ -108,9 +109,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
         _currentIndex = 0;
       }
       // Gọi getIsLikedSong khi bài hát thay đổi
-      SharedPrefsHelper.getUserId(AppStrings.uid).then((uid) {
-        getIsLikedSong(uid, _playlist[_currentIndex!].id!);
-      });
+      await getIsLikedSong(_playlist[_currentIndex!].id!);
       play();
     }
     notifyListeners();
@@ -126,10 +125,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
       } else {
         _currentIndex = _playlist.length - 1;
       }
-      // Gọi getIsLikedSong khi bài hát thay đổi
-      SharedPrefsHelper.getUserId(AppStrings.uid).then((uid) {
-        getIsLikedSong(uid, _playlist[_currentIndex!].id!);
-      });
+      await getIsLikedSong(_playlist[_currentIndex!].id!);
       play();
     }
   }
@@ -166,8 +162,9 @@ class MusicPlayerViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getIsLikedSong(String userId, String songId) async {
+  Future<void> getIsLikedSong(String songId) async {
     try {
+      String userId = await SharedPrefsHelper.getUserId(AppStrings.uid);
       _isLiked = await _usersService.isSongLiked(userId, songId);
     } catch (error) {
       print("err in viewmodel");

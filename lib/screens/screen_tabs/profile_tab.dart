@@ -30,10 +30,7 @@ class _ProfileTabState extends State<ProfileTab> {
     ));
 
     Future.microtask(() {
-      final userCredential =
-          Provider.of<AuthViewmodel>(context, listen: false).currentUser;
-      Provider.of<UsersViewmodel>(context, listen: false)
-          .getUser(userCredential!.uid);
+      Provider.of<UsersViewmodel>(context, listen: false).getUser();
     });
   }
 

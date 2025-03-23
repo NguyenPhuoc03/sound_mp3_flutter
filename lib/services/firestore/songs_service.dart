@@ -70,5 +70,17 @@ class SongsService {
     return result;
   }
 
- 
+  // lay bai hat theo search name
+  Future<List<Songs>> getSongBySearchName(String searchText) async {
+    String endString = searchText + '\uf8ff';
+    final querySnapshot = await _db
+        .collection(AppConstants.SONGS_COLLECTION)
+        .where('title', isGreaterThanOrEqualTo: searchText)
+        .where('title', isLessThanOrEqualTo: endString)
+        .get();
+
+    List<Songs> songs = [];
+    songs = querySnapshot.docs.map((doc) => Songs.fromFirestore(doc)).toList();
+    return songs;
+  }
 }
