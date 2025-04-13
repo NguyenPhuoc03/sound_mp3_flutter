@@ -1,16 +1,15 @@
-# sound_mp3
+# 🎵 Sound MP3 Flutter
 
-A new Flutter project.
+Đây là frontend cho ứng dụng nghe nhạc **Sound MP3**.
 
-## Getting Started
+## ⚙️ Công nghệ sử dụng
 
-This project is a starting point for a Flutter application.
+- Flutter
+- State Management: Provider
+- Networking libraries: http
 
-A few resources to get you started if this is your first Flutter project:
+## 🌐 Backend API
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Backend **Sound MP3** được phát triển với Nodejs, ExpressJS.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+👉 [Sound MP3 API](https://github.com/NguyenPhuoc03/sound_mp3_api)
