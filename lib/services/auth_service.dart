@@ -1,37 +1,53 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:sound_mp3/data/responses/user_login_response.dart';
+import 'package:sound_mp3/utils/api_endpoints.dart';
+import 'package:sound_mp3/utils/app_config.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User?> loginWithEmail(String email, String password) async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return userCredential.user;
-    } catch (e) {
-      print("Login failed: $e");
-      return null;
+  Future<UserLoginResponse> login(String email, String password) async {
+    final response = await http.post(
+      Uri.parse('${AppConfig.baseUrl}${ApiEndpoints.login}'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+
+    if (response.statusCode != 200) {
+      final errorJson = jsonDecode(response.body);
+      throw Exception(errorJson['message'] ?? 'Login failed');
     }
+
+    final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    return UserLoginResponse.fromJson(jsonResponse);
   }
 
-  Future<User?> registerWithEmail(String email, String password) async {
+  Future<bool> register(String name, String email, String password) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+      final response = await http.post(
+        Uri.parse('${AppConfig.baseUrl}${ApiEndpoints.register}'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"name": name, 'email': email, 'password': password}),
       );
-      return userCredential.user;
+
+      if (response.statusCode != 201) {
+        final errorJson = jsonDecode(response.body);
+        print(errorJson);
+        throw Exception(errorJson['message'] ?? 'Register failed');
+      }
+      return true;
     } catch (e) {
       print("Registration failed: $e");
-      return null;
+      return false;
     }
   }
 
   // Đăng xuất
   Future<void> logout() async {
-    await _auth.signOut();
+    // xu li logout phía backend (giải phap đưa token vào blacklist)
   }
 
   // Kiểm tra trạng thái đăng nhập

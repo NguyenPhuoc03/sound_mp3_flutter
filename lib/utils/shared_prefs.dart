@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPrefsHelper {
+class SharedPrefs {
   // Write DATA
   static Future<void> saveUserId(String key, String value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

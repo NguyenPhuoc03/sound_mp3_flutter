@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sound_mp3/data/models/users.dart';
 import 'package:sound_mp3/services/auth_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs_helper.dart';
+import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 
 class AuthViewmodel with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -10,23 +10,22 @@ class AuthViewmodel with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  User? _currentUser;
-  User? get currentUser => _currentUser;
-
-  AuthViewmodel() {
-    _authService.authStateChanges.listen((user) {
-      _currentUser = user;
-      notifyListeners();
-    });
-  }
+  Users? _currentUser;
+  Users? get currentUser => _currentUser;
 
   Future<void> login(String email, String password) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _currentUser = await _authService.loginWithEmail(email, password);
-      await SharedPrefsHelper.saveUserId(AppStrings.uid, _currentUser!.uid);
+      final result = await _authService.login(email, password);
+      if (result.accessToken.isEmpty) {
+        throw Exception('Invalid access token');
+      }
+
+      SecureStorageHelper.writeKey(AppStrings.accessToken, result.accessToken);
+      _currentUser = result.user;
+      notifyListeners();
     } catch (e) {
       print("Login error: $e");
     } finally {
@@ -35,23 +34,27 @@ class AuthViewmodel with ChangeNotifier {
     }
   }
 
-  Future<void> register(String email, String password) async {
+  Future<bool> register(String name, String email, String password) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _currentUser = await _authService.registerWithEmail(email, password);
-    } catch (e) {
-      print("Registration error: $e");
-    } finally {
+      final result = await _authService.register(name, email, password);
+
       _isLoading = false;
       notifyListeners();
+
+      return result;
+    } catch (e) {
+      print("Registration error: $e");
+      _isLoading = false;
+      notifyListeners();
+      return false;
     }
   }
 
   Future<void> logout() async {
-    await _authService.logout();
-    await SharedPrefsHelper.removeUserId(AppStrings.uid);
+    await SecureStorageHelper.deleteKey(AppStrings.accessToken);
     _currentUser = null;
     notifyListeners();
   }
