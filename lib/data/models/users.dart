@@ -58,4 +58,14 @@ class Users {
       "history": history ?? {},
     };
   }
+
+
+  factory Users.fromJson(Map<String, dynamic> json) {
+    return Users(
+      uid: json['id'],
+      name: json['name'],
+      email: json['email'],
+      //role: ['role'],
+    );
+  }
 }

@@ -5,7 +5,7 @@ import 'package:sound_mp3/data/responses/api_response.dart';
 import 'package:sound_mp3/services/firestore/artists_service.dart';
 import 'package:sound_mp3/services/firestore/songs_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs_helper.dart';
+import 'package:sound_mp3/utils/shared_prefs.dart';
 
 class SongsViewmodel with ChangeNotifier {
   final SongsService _songsService = SongsService();
@@ -94,7 +94,7 @@ class SongsViewmodel with ChangeNotifier {
   // lay song trong history
   Future<void> getHistorySongs() async {
     // su dung userid duoc luu trong shared pref
-    String userId = await SharedPrefsHelper.getUserId(AppStrings.uid);
+    String userId = await SharedPrefs.getUserId(AppStrings.uid);
     _todaySongs = ApiResponse.loading();
     _yesterdaySongs = ApiResponse.loading();
     _pastSongs = ApiResponse.loading();

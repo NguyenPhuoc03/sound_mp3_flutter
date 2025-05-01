@@ -4,7 +4,7 @@ import 'package:sound_mp3/data/responses/api_response.dart';
 
 import 'package:sound_mp3/services/firestore/users_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs_helper.dart';
+import 'package:sound_mp3/utils/shared_prefs.dart';
 
 class UsersViewmodel with ChangeNotifier {
   final UsersService _usersService = UsersService();
@@ -15,7 +15,7 @@ class UsersViewmodel with ChangeNotifier {
 
   // lay user
   Future<void> getUser() async {
-    String userId = await SharedPrefsHelper.getUserId(AppStrings.uid);
+    String userId = await SharedPrefs.getUserId(AppStrings.uid);
     _user = ApiResponse.loading();
     notifyListeners();
 

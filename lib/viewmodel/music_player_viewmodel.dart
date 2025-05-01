@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/services/firestore/users_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs_helper.dart';
+import 'package:sound_mp3/utils/shared_prefs.dart';
 import 'package:sound_mp3/utils/time_format.dart';
 
 class MusicPlayerViewmodel extends ChangeNotifier {
@@ -65,7 +65,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
     _isPlaying = true;
 
     // lay uid tu Shared Prefs và add vao song history
-    String uid = await SharedPrefsHelper.getUserId(AppStrings.uid);
+    String uid = await SharedPrefs.getUserId(AppStrings.uid);
     await _usersService.addSongHistory(
         uid, formatDateYMD(DateTime.now()), _playlist[_currentIndex!].id!);
     notifyListeners();
@@ -164,7 +164,7 @@ class MusicPlayerViewmodel extends ChangeNotifier {
 
   Future<void> getIsLikedSong(String songId) async {
     try {
-      String userId = await SharedPrefsHelper.getUserId(AppStrings.uid);
+      String userId = await SharedPrefs.getUserId(AppStrings.uid);
       _isLiked = await _usersService.isSongLiked(userId, songId);
     } catch (error) {
       print("err in viewmodel");

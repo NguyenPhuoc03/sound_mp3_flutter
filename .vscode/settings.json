@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/CNTT/SoundMP3_Flutter/sound_mp3/linux"
+    "cmake.sourceDirectory": "D:/CNTT/SoundMP3_Flutter/sound_mp3/linux",
+    "cmake.ignoreCMakeListsMissing": true
 }

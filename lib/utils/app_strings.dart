@@ -5,4 +5,6 @@ class AppStrings {
   static const String album = "album";
 
   static const String uid = "uid";
+
+  static const String accessToken = "accessToken";
 }
