@@ -229,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.neutralWhite,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   GestureDetector(

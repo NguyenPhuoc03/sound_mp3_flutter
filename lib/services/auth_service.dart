@@ -35,7 +35,6 @@ class AuthService {
 
       if (response.statusCode != 201) {
         final errorJson = jsonDecode(response.body);
-        print(errorJson);
         throw Exception(errorJson['message'] ?? 'Register failed');
       }
       return true;
