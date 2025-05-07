@@ -39,4 +39,15 @@ class Albums {
       "artist": artist ?? [],
     };
   }
+
+  factory Albums.fromJson(Map<String, dynamic> json) {
+    return Albums(
+      id: json["_id"],
+      title: json['title'],
+      image: json['image'],
+      interested: json['interested'],
+      artist: List<String>.from(json['artists']),
+      releaseDate: json['releaseDate'],
+    );
+  }
 }

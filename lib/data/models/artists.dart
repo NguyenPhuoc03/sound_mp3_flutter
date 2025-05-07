@@ -24,6 +24,15 @@ class Artists {
       interested: data?['interested'],
     );
   }
+  factory Artists.fromJson(Map<String, dynamic> json) {
+    return Artists(
+      id: json["_id"],
+      name: json['name'],
+      avatar: json['avatar'],
+      interested: json['interested'],
+    );
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       "name": name,

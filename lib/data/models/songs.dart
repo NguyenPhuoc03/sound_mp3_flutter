@@ -7,8 +7,9 @@ class Songs {
   String? image;
   int duration;
   String? album;
-  int? likeCount;
+  int? interested;
   List<String> artist;
+  String? releaseDate;
 
   Songs({
     this.id,
@@ -17,8 +18,9 @@ class Songs {
     this.image,
     required this.duration,
     this.album,
-    this.likeCount,
+    this.interested,
     required this.artist,
+    this.releaseDate,
   });
 
   factory Songs.fromFirestore(
@@ -32,7 +34,7 @@ class Songs {
       image: data?['image'],
       duration: data?['duration'],
       album: data?['album'],
-      likeCount: data?['likeCount'],
+      interested: data?['likeCount'],
       artist: List<String>.from(data?['artist'] ?? []),
     );
   }
@@ -43,8 +45,22 @@ class Songs {
       "image": image ?? "",
       "duration": duration,
       "album": album ?? "Single",
-      "likeCount": likeCount ?? 0,
+      "likeCount": interested ?? 0,
       "artist": artist,
     };
+  }
+
+  factory Songs.fromJson(Map<String, dynamic> json) {
+    return Songs(
+      id: json["_id"],
+      title: json['title'],
+      source: json['source'],
+      image: json['image'],
+      duration: json['duration'],
+      album: json['album'],
+      interested: json['interested'],
+      artist: List<String>.from(json['artists']),
+      releaseDate: json['releaseDate'],
+    );
   }
 }

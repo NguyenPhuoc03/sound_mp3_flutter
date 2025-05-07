@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 import 'package:sound_mp3/data/models/artists.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
-import 'package:sound_mp3/services/firestore/artists_service.dart';
+import 'package:sound_mp3/services/artists_service.dart';
+import 'package:sound_mp3/utils/app_strings.dart';
 
 class ArtistsViewmodel with ChangeNotifier {
   final ArtistsService _artistsService = ArtistsService();
@@ -15,12 +17,15 @@ class ArtistsViewmodel with ChangeNotifier {
     notifyListeners();
 
     try {
-      final artistList = await _artistsService.getAllArtists();
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Get all artist fail");
+      }
+      final artistList = await _artistsService.getAllArtists(accessToken);
 
       _artists = ApiResponse.completed(artistList);
     } catch (error) {
-      print(
-          "Error in ArtistsViewmodel: ${ApiResponse.error(error.toString())}");
       _artists = ApiResponse.error(error.toString());
     } finally {
       notifyListeners();

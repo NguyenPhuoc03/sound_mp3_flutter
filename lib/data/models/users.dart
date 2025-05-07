@@ -9,6 +9,7 @@ class Users {
   List<String>? likedArtists;
   List<String>? likedSongs;
   bool? premium;
+  String role;
   Map<String, List<String>>? history;
 
   Users({
@@ -19,6 +20,7 @@ class Users {
     this.likedArtists,
     this.likedSongs,
     this.premium = false,
+    this.role = "user",
     required this.name,
     this.history,
   });
@@ -59,13 +61,16 @@ class Users {
     };
   }
 
-
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
-      uid: json['id'],
-      name: json['name'],
+      uid: json["_id"],
       email: json['email'],
-      //role: ['role'],
+      name: json['name'],
+      avatar: json['image'],
+      likedArtists: List<String>.from(json['likedArtists']),
+      likedSongs: List<String>.from(json['likedSongs']),
+      premium: json['premium'],
+      role: json['role'],
     );
   }
 }

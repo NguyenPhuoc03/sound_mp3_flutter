@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sound_mp3/data/models/songs.dart';
-import 'package:sound_mp3/services/firestore/users_service.dart';
+import 'package:sound_mp3/services/users_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
 import 'package:sound_mp3/utils/shared_prefs.dart';
 import 'package:sound_mp3/utils/time_format.dart';

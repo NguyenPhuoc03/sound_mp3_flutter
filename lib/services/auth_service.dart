@@ -1,14 +1,11 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:sound_mp3/data/responses/user_login_response.dart';
 import 'package:sound_mp3/utils/api_endpoints.dart';
 import 'package:sound_mp3/utils/app_config.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   Future<UserLoginResponse> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('${AppConfig.baseUrl}${ApiEndpoints.login}'),
@@ -48,10 +45,4 @@ class AuthService {
   Future<void> logout() async {
     // xu li logout phía backend (giải phap đưa token vào blacklist)
   }
-
-  // Kiểm tra trạng thái đăng nhập
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
-
-  // Lấy người dùng hiện tại
-  User? get currentUser => _auth.currentUser;
 }

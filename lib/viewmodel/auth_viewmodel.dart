@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sound_mp3/data/models/users.dart';
+import 'package:sound_mp3/data/responses/basic_user.dart';
 import 'package:sound_mp3/services/auth_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
 import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
@@ -10,8 +10,8 @@ class AuthViewmodel with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Users? _currentUser;
-  Users? get currentUser => _currentUser;
+  BasicUser? _currentUser;
+  BasicUser? get currentUser => _currentUser;
 
   Future<void> login(String email, String password) async {
     _isLoading = true;
@@ -22,6 +22,7 @@ class AuthViewmodel with ChangeNotifier {
       if (result.accessToken.isEmpty) {
         throw Exception('Invalid access token');
       }
+      print(result.user);
 
       SecureStorageHelper.writeKey(AppStrings.accessToken, result.accessToken);
       _currentUser = result.user;

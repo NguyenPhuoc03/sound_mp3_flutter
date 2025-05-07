@@ -1,8 +1,8 @@
-import 'package:sound_mp3/data/models/users.dart';
+import 'package:sound_mp3/data/responses/basic_user.dart';
 
 class UserLoginResponse {
   final String accessToken;
-  final Users user;
+  final BasicUser user;
 
   UserLoginResponse({
     required this.accessToken,
@@ -12,7 +12,7 @@ class UserLoginResponse {
   factory UserLoginResponse.fromJson(Map<String, dynamic> json) {
     return UserLoginResponse(
       accessToken: json["data"]['accessToken'],
-      user: Users.fromJson(json["data"]['user']),
+      user: BasicUser.fromJson(json["data"]['user']),
     );
   }
 }

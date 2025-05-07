@@ -1,20 +1,49 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sound_mp3/data/models/users.dart';
+import 'package:sound_mp3/utils/api_endpoints.dart';
+import 'package:sound_mp3/utils/app_config.dart';
 import 'package:sound_mp3/utils/constants.dart';
 
 class UsersService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Lay nguoi dung
-  Future<Users?> getUser(String userId) async {
-    try {
-      final userDoc =
-          await _db.collection(AppConstants.USERS_COLLECTION).doc(userId).get();
+  // Future<Users?> getUser(String userId) async {
+  //   try {
+  //     final userDoc =
+  //         await _db.collection(AppConstants.USERS_COLLECTION).doc(userId).get();
 
-      if (userDoc.exists) {
-        return Users.fromFirestore(userDoc);
+  //     if (userDoc.exists) {
+  //       return Users.fromFirestore(userDoc);
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     print("Error in user services: $e");
+  //     return null;
+  //   }
+  // }
+
+  Future<Users?> getUser(String accessToken) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConfig.baseUrl}${ApiEndpoints.profile}'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        final errorJson = jsonDecode(response.body);
+        throw Exception(errorJson['message'] ?? 'failed');
       }
-      return null;
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+      Users users = Users.fromJson(jsonResponse["data"]);
+      return users;
     } catch (e) {
       print("Error in user services: $e");
       return null;

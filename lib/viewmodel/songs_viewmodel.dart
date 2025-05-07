@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
-import 'package:sound_mp3/services/firestore/artists_service.dart';
-import 'package:sound_mp3/services/firestore/songs_service.dart';
+import 'package:sound_mp3/services/artists_service.dart';
+import 'package:sound_mp3/services/songs_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
 import 'package:sound_mp3/utils/shared_prefs.dart';
 
@@ -43,11 +44,14 @@ class SongsViewmodel with ChangeNotifier {
     notifyListeners();
 
     try {
-      final songsWithArtistId = await _songsService.getAllSongs();
-      final songsWithArtistNames =
-          await _convertArtistIdsToNames(songsWithArtistId);
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Get all song fail");
+      }
+      final songs = await _songsService.getAllSongs(accessToken);
 
-      _songs = ApiResponse.completed(songsWithArtistNames);
+      _songs = ApiResponse.completed(songs);
     } catch (error) {
       _songs = ApiResponse.error(error.toString());
     } finally {
@@ -61,11 +65,15 @@ class SongsViewmodel with ChangeNotifier {
     notifyListeners();
 
     try {
-      final songsWithArtistId = await _songsService.getSongsByArtistId(artId);
-      final songsWithArtistNames =
-          await _convertArtistIdsToNames(songsWithArtistId);
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Get song fail");
+      }
 
-      _songsByArtistId = ApiResponse.completed(songsWithArtistNames);
+      final songs = await _songsService.getSongsByArtistId(accessToken, artId);
+
+      _songsByArtistId = ApiResponse.completed(songs);
     } catch (error) {
       _songsByArtistId = ApiResponse.error(error.toString());
     } finally {
@@ -79,11 +87,14 @@ class SongsViewmodel with ChangeNotifier {
     notifyListeners();
 
     try {
-      final songsWithAlbumId = await _songsService.getSongsByAlbumId(albumId);
-      final songsWithArtistNames =
-          await _convertArtistIdsToNames(songsWithAlbumId);
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Get song fail");
+      }
+      final songs = await _songsService.getSongsByAlbumId(accessToken, albumId);
 
-      _songsByAlbumId = ApiResponse.completed(songsWithArtistNames);
+      _songsByAlbumId = ApiResponse.completed(songs);
     } catch (error) {
       _songsByAlbumId = ApiResponse.error(error.toString());
     } finally {

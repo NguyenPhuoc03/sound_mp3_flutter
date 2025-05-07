@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 import 'package:sound_mp3/data/models/users.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
 
-import 'package:sound_mp3/services/firestore/users_service.dart';
+import 'package:sound_mp3/services/users_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs.dart';
 
 class UsersViewmodel with ChangeNotifier {
   final UsersService _usersService = UsersService();
@@ -15,14 +15,17 @@ class UsersViewmodel with ChangeNotifier {
 
   // lay user
   Future<void> getUser() async {
-    String userId = await SharedPrefs.getUserId(AppStrings.uid);
     _user = ApiResponse.loading();
     notifyListeners();
 
     try {
-      final userTemp = await _usersService.getUser(userId);
-
-      _user = ApiResponse.completed(userTemp);
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Get user fail");
+      }
+      final user = await _usersService.getUser(accessToken);
+      _user = ApiResponse.completed(user);
     } catch (error) {
       _user = ApiResponse.error(error.toString());
     } finally {
