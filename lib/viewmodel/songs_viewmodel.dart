@@ -102,45 +102,34 @@ class SongsViewmodel with ChangeNotifier {
     }
   }
 
-  // lay song trong history
+  // lấy lịch sử nghe nhạc
   Future<void> getHistorySongs() async {
-    // su dung userid duoc luu trong shared pref
-    String userId = await SharedPrefs.getUserId(AppStrings.uid);
     _todaySongs = ApiResponse.loading();
     _yesterdaySongs = ApiResponse.loading();
     _pastSongs = ApiResponse.loading();
     notifyListeners();
 
     try {
-      String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      String yesterday = DateFormat('yyyy-MM-dd')
-          .format(DateTime.now().subtract(const Duration(days: 1)));
-      DateTime threeDaysAgo = DateTime.now().subtract(const Duration(days: 2));
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Access token is missing");
+      }
+      
+      final historyData =
+          await _songsService.getSongHistoryWithDetails(accessToken);
 
-      Map<String, List<Songs>> mapHistorySong =
-          await _songsService.getSongHistoryWithDetails(userId);
-
-      final todaySongs =
-          await _convertArtistIdsToNames(mapHistorySong[today] ?? []);
-      final yesterdaySongs =
-          await _convertArtistIdsToNames(mapHistorySong[yesterday] ?? []);
-      final threeAgoDaySongs = [];
-      // Gom cac bai hat cua 3 ngay truoc tro ve truoc
-      mapHistorySong.forEach((date, songs) {
-        DateTime parsedDate = DateTime.parse(date);
-        if (parsedDate.isBefore(threeDaysAgo)) {
-          threeAgoDaySongs.addAll(songs);
-        }
-      });
-
-      final pastSongs =
-          await _convertArtistIdsToNames(threeAgoDaySongs.cast<Songs>());
+      final todaySongs = historyData.today;
+      final yesterdaySongs = historyData.yesterday;
+      final pastSongs = historyData.other;
 
       _todaySongs = ApiResponse.completed(todaySongs);
       _yesterdaySongs = ApiResponse.completed(yesterdaySongs);
       _pastSongs = ApiResponse.completed(pastSongs);
     } catch (error) {
-      _songsByAlbumId = ApiResponse.error(error.toString());
+      _todaySongs = ApiResponse.error(error.toString());
+      _yesterdaySongs = ApiResponse.error(error.toString());
+      _pastSongs = ApiResponse.error(error.toString());
     } finally {
       notifyListeners();
     }

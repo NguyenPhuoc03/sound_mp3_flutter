@@ -2,15 +2,14 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sound_mp3/data/models/history.dart';
 import 'package:sound_mp3/data/models/songs.dart';
-import 'package:sound_mp3/services/users_service.dart';
 import 'package:sound_mp3/utils/api_endpoints.dart';
 import 'package:sound_mp3/utils/app_config.dart';
 import 'package:sound_mp3/utils/constants.dart';
 
 class SongsService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final UsersService _userService = UsersService();
 
   Future<List<Songs>> getAllSongs(String accessToken) async {
     final response = await http.get(
@@ -91,24 +90,22 @@ class SongsService {
   }
 
   // Lay danh sach lich su bai hat tu user service (Map<date, List<songId>> =>> Map<date, List<Songs>>)
-  Future<Map<String, List<Songs>>> getSongHistoryWithDetails(
-      String userId) async {
-    // Lay lich su tu collection users
-    final songHistory = await _userService.getSongHistory(userId);
+  Future<History> getSongHistoryWithDetails(String accessToken) async {
+    final response = await http.get(
+      Uri.parse('${AppConfig.baseUrl}${ApiEndpoints.getAllHistory}'),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json'
+      },
+    );
 
-    // Map can tra ve
-    Map<String, List<Songs>> result = {};
-
-    for (String key in songHistory.keys) {
-      List<String> songIds = songHistory[key]!;
-
-      List<Songs> songs = await Future.wait(
-        songIds.map((id) => getSongById(id)),
-      );
-
-      result[key] = songs;
+    if (response.statusCode != 200) {
+      final errorJson = jsonDecode(response.body);
+      throw Exception(errorJson['message'] ?? 'failed');
     }
-    return result;
+    final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    final Map<String, dynamic> songMapJson = jsonResponse['data'];
+    return History.fromJson(songMapJson);
   }
 
   // lay bai hat theo search name
