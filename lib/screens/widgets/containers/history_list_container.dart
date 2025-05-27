@@ -63,13 +63,12 @@ class _HistoryListContainerState extends State<HistoryListContainer> {
                 },
               );
             }),
-        if (widget.itemCount < widget.items.length)
-          TextButton(
-            onPressed: widget.seeMore,
-            child: Text("See all",
-                style: AppTypography.bodySemiBold
-                    .copyWith(color: AppColors.neutralWhite)),
-          ),
+        TextButton(
+          onPressed: widget.seeMore,
+          child: Text("See all",
+              style: AppTypography.bodySemiBold
+                  .copyWith(color: AppColors.neutralWhite)),
+        ),
         const SizedBox(height: 32),
       ],
     );

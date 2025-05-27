@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sound_mp3/data/models/history.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/utils/api_endpoints.dart';
 import 'package:sound_mp3/utils/app_config.dart';
@@ -80,32 +79,6 @@ class SongsService {
     songs = songListJson.map((json) => Songs.fromJson(json)).toList();
 
     return songs;
-  }
-
-  // lay bai hat theo id
-  Future<Songs> getSongById(String songId) async {
-    final doc =
-        await _db.collection(AppConstants.SONGS_COLLECTION).doc(songId).get();
-    return Songs.fromFirestore(doc);
-  }
-
-  // Lay danh sach lich su bai hat tu user service (Map<date, List<songId>> =>> Map<date, List<Songs>>)
-  Future<History> getSongHistoryWithDetails(String accessToken) async {
-    final response = await http.get(
-      Uri.parse('${AppConfig.baseUrl}${ApiEndpoints.getAllHistory}'),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-        'Content-Type': 'application/json'
-      },
-    );
-
-    if (response.statusCode != 200) {
-      final errorJson = jsonDecode(response.body);
-      throw Exception(errorJson['message'] ?? 'failed');
-    }
-    final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-    final Map<String, dynamic> songMapJson = jsonResponse['data'];
-    return History.fromJson(songMapJson);
   }
 
   // lay bai hat theo search name

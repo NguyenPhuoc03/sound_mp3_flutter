@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 import 'package:sound_mp3/data/models/songs.dart';
+import 'package:sound_mp3/services/history_service.dart';
 import 'package:sound_mp3/services/users_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
 import 'package:sound_mp3/utils/shared_prefs.dart';
@@ -8,6 +10,7 @@ import 'package:sound_mp3/utils/time_format.dart';
 
 class MusicPlayerViewmodel extends ChangeNotifier {
   final UsersService _usersService = UsersService();
+  final HistoryService _historyService = HistoryService();
   List<Songs> _playlist = [];
   int? _currentIndex;
   bool _isPlaying = false;
@@ -56,19 +59,35 @@ class MusicPlayerViewmodel extends ChangeNotifier {
 
   // play the song
   void play() async {
-    if (_audioPlayer.state == PlayerState.playing) {
-      await _audioPlayer.stop(); // stop current song
-    }
-    String source = _playlist[_currentIndex!].source;
-    await _audioPlayer.setSourceUrl(source);
-    await _audioPlayer.resume();
-    _isPlaying = true;
+    try {
+      if (_audioPlayer.state == PlayerState.playing) {
+        await _audioPlayer.stop();
+      }
 
-    // lay uid tu Shared Prefs và add vao song history
-    String uid = await SharedPrefs.getUserId(AppStrings.uid);
-    await _usersService.addSongHistory(
-        uid, formatDateYMD(DateTime.now()), _playlist[_currentIndex!].id!);
-    notifyListeners();
+      String source = _playlist[_currentIndex!].source;
+      await _audioPlayer.setSourceUrl(source);
+      await _audioPlayer.resume();
+      _isPlaying = true;
+
+      _saveHistory();
+    } catch (e) {
+      debugPrint('Error playing song: $e');
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  void _saveHistory() async {
+    try {
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) return;
+
+      await _historyService.addSongHistory(
+          accessToken, _playlist[_currentIndex!].id!);
+    } catch (e) {
+      debugPrint('Failed to save history: $e');
+    }
   }
 
   // pause current song

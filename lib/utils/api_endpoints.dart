@@ -18,4 +18,5 @@ class ApiEndpoints {
 
   //history
   static const String getAllHistory = '/history/get-all';
+  static const String addSongHistory = '/history/create';
 }

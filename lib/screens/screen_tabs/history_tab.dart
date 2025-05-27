@@ -24,8 +24,7 @@ class _HistoryTabState extends State<HistoryTab> {
   @override
   void initState() {
     Future.microtask(() {
-      Provider.of<SongsViewmodel>(context, listen: false)
-          .getHistorySongs();
+      Provider.of<SongsViewmodel>(context, listen: false).getHistorySongs();
     });
     super.initState();
   }
@@ -84,11 +83,7 @@ class _HistoryTabState extends State<HistoryTab> {
                           title: 'Today',
                           items: todaySongs,
                           itemCount: todayCount,
-                          seeMore: () {
-                            setState(() {
-                              todayCount = _seeMore(todayCount, todaySongs);
-                            });
-                          },
+                          seeMore: () => songViewmodel.loadMoreTodaySongs(),
                         )
                       : const SizedBox.shrink(),
 
@@ -98,12 +93,7 @@ class _HistoryTabState extends State<HistoryTab> {
                           title: 'Yesterday',
                           items: yesterdaySongs,
                           itemCount: yesterdayCount,
-                          seeMore: () {
-                            setState(() {
-                              yesterdayCount =
-                                  _seeMore(yesterdayCount, yesterdaySongs);
-                            });
-                          },
+                          seeMore: () => songViewmodel.loadMoreYesterdaySongs(),
                         )
                       : const SizedBox.shrink(),
 
@@ -113,12 +103,7 @@ class _HistoryTabState extends State<HistoryTab> {
                           title: 'Older',
                           items: pastSongs,
                           itemCount: threeDayAgoCount,
-                          seeMore: () {
-                            setState(() {
-                              threeDayAgoCount =
-                                  _seeMore(threeDayAgoCount, pastSongs);
-                            });
-                          },
+                          seeMore: () => songViewmodel.loadMoreOtherSongs(),
                         )
                       : const SizedBox.shrink(),
                 ],
@@ -126,9 +111,5 @@ class _HistoryTabState extends State<HistoryTab> {
             },
           ),
         ));
-  }
-
-  int _seeMore(int currentCount, List<Songs> songList) {
-    return (currentCount + 5).clamp(0, songList.length);
   }
 }

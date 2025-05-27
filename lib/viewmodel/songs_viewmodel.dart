@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/data/responses/api_response.dart';
-import 'package:sound_mp3/services/artists_service.dart';
+import 'package:sound_mp3/services/history_service.dart';
 import 'package:sound_mp3/services/songs_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs.dart';
 
 class SongsViewmodel with ChangeNotifier {
   final SongsService _songsService = SongsService();
-  final ArtistsService _artistsService = ArtistsService();
+  final HistoryService _historyService = HistoryService();
+
+  int _todayOffset = 0;
+  int _yesterdayOffset = 0;
+  int _otherOffset = 0;
+  List<Songs> _todayList = [];
+  List<Songs> _yesterdayList = [];
+  List<Songs> _otherList = [];
 
   // getter setter all song
   ApiResponse<List<Songs>> _songs = ApiResponse.loading();
@@ -35,8 +40,8 @@ class SongsViewmodel with ChangeNotifier {
   ApiResponse<List<Songs>> get pastSongs => _pastSongs;
 
   // getter setter search song
-  ApiResponse<List<Songs>> _searchResults = ApiResponse.loading();
-  ApiResponse<List<Songs>> get searchResults => _searchResults;
+  // ApiResponse<List<Songs>> _searchResults = ApiResponse.loading();
+  // ApiResponse<List<Songs>> get searchResults => _searchResults;
 
   // lay tat ca song
   Future<void> getAllSongs() async {
@@ -107,6 +112,14 @@ class SongsViewmodel with ChangeNotifier {
     _todaySongs = ApiResponse.loading();
     _yesterdaySongs = ApiResponse.loading();
     _pastSongs = ApiResponse.loading();
+
+    _todayOffset = 0;
+    _yesterdayOffset = 0;
+    _otherOffset = 0;
+    _todayList.clear();
+    _yesterdayList.clear();
+    _otherList.clear();
+
     notifyListeners();
 
     try {
@@ -115,17 +128,21 @@ class SongsViewmodel with ChangeNotifier {
       if (accessToken == null) {
         throw Exception("Access token is missing");
       }
-      
-      final historyData =
-          await _songsService.getSongHistoryWithDetails(accessToken);
 
-      final todaySongs = historyData.today;
-      final yesterdaySongs = historyData.yesterday;
-      final pastSongs = historyData.other;
+      final historyData = await _historyService.getSongHistoryWithDetails(
+          accessToken: accessToken);
 
-      _todaySongs = ApiResponse.completed(todaySongs);
-      _yesterdaySongs = ApiResponse.completed(yesterdaySongs);
-      _pastSongs = ApiResponse.completed(pastSongs);
+      _todayList = historyData.today;
+      _yesterdayList = historyData.yesterday;
+      _otherList = historyData.other;
+
+      _todayOffset = _todayList.length;
+      _yesterdayOffset = _yesterdayList.length;
+      _otherOffset = _otherList.length;
+
+      _todaySongs = ApiResponse.completed(_todayList);
+      _yesterdaySongs = ApiResponse.completed(_yesterdayList);
+      _pastSongs = ApiResponse.completed(_otherList);
     } catch (error) {
       _todaySongs = ApiResponse.error(error.toString());
       _yesterdaySongs = ApiResponse.error(error.toString());
@@ -135,38 +152,97 @@ class SongsViewmodel with ChangeNotifier {
     }
   }
 
-  // search name
-  Future<void> searchSongs(String query) async {
+  Future<void> loadMoreTodaySongs() async {
     try {
-      List<Songs> list = [];
-      if (query.isEmpty) {
-        _searchResults = ApiResponse.completed(list);
-
-        print("vsvsv $list");
-        notifyListeners();
-        return;
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Access token is missing");
       }
-      final songsTemp = await _songsService.getSongBySearchName(query);
-      list = await _convertArtistIdsToNames(songsTemp);
 
-      _searchResults = ApiResponse.completed(list);
-    } catch (error) {
-      _searchResults = ApiResponse.error(error.toString());
-    } finally {
-      notifyListeners();
+      final historyData = await _historyService.getSongHistoryWithDetails(
+        accessToken: accessToken,
+        todayOffset: _todayOffset,
+      );
+
+      final newSongs = historyData.today;
+      _todayList.addAll(newSongs);
+      _todayOffset += newSongs.length;
+
+      _todaySongs = ApiResponse.completed(_todayList);
+    } catch (e) {
+      _todaySongs = ApiResponse.error(e.toString());
     }
+    notifyListeners();
   }
 
-  //! convert song(artist id) -> song (artist name)
-  Future<List<Songs>> _convertArtistIdsToNames(List<Songs> songs) async {
-    for (var song in songs) {
-      List<String> artistNames = [];
-      for (var artistId in song.artist) {
-        final artist = await _artistsService.getArtistById(artistId);
-        artistNames.add(artist.name);
+  Future<void> loadMoreYesterdaySongs() async {
+    try {
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Access token is missing");
       }
-      song.artist = artistNames;
+
+      final historyData = await _historyService.getSongHistoryWithDetails(
+        accessToken: accessToken,
+        yesterdayOffset: _yesterdayOffset,
+      );
+
+      final newSongs = historyData.yesterday;
+      _yesterdayList.addAll(newSongs);
+      _yesterdayOffset += newSongs.length;
+
+      _yesterdaySongs = ApiResponse.completed(_yesterdayList);
+    } catch (e) {
+      _yesterdaySongs = ApiResponse.error(e.toString());
     }
-    return songs;
+    notifyListeners();
+  }
+
+  Future<void> loadMoreOtherSongs() async {
+    try {
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("Access token is missing");
+      }
+
+      final historyData = await _historyService.getSongHistoryWithDetails(
+        accessToken: accessToken,
+        otherOffset: _otherOffset,
+      );
+
+      final newSongs = historyData.today;
+      _otherList.addAll(newSongs);
+      _otherOffset += newSongs.length;
+
+      _pastSongs = ApiResponse.completed(_otherList);
+    } catch (e) {
+      _pastSongs = ApiResponse.error(e.toString());
+    }
+    notifyListeners();
+  }
+
+  // // search name
+  Future<void> searchSongs(String query) async {
+    // try {
+    //   List<Songs> list = [];
+    //   if (query.isEmpty) {
+    //     _searchResults = ApiResponse.completed(list);
+
+    //     print("vsvsv $list");
+    //     notifyListeners();
+    //     return;
+    //   }
+    //   final songsTemp = await _songsService.getSongBySearchName(query);
+    //   list = await _convertArtistIdsToNames(songsTemp);
+
+    //   _searchResults = ApiResponse.completed(list);
+    // } catch (error) {
+    //   _searchResults = ApiResponse.error(error.toString());
+    // } finally {
+    //   notifyListeners();
+    // }
   }
 }

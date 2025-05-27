@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sound_mp3/configs/colors.dart';
 import 'package:sound_mp3/configs/typography.dart';
 import 'package:sound_mp3/data/models/songs.dart';
+import 'package:sound_mp3/screens/widgets/other/empty_display.dart';
 import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
@@ -87,7 +88,9 @@ class _SongListScreenState extends State<SongListScreen> {
                     } else {}
 
                     return songs.isEmpty
-                        ? const LoadingDisplay()
+                        ? const EmptyDisplay(
+                            message: 'No songs exist',
+                          )
                         : ListView.builder(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
@@ -110,7 +113,12 @@ class _SongListScreenState extends State<SongListScreen> {
                           );
                   },
                 )),
-            MiniPlayerWidget(controller: MiniplayerController())
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: MiniPlayerWidget(controller: MiniplayerController()),
+            ),
           ],
         ));
   }

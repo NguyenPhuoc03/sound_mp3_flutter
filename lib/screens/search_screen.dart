@@ -82,32 +82,32 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
               ),
-              Expanded(
-                child: searchProvider.searchResults.data == null
-                    ? const SizedBox.shrink()
-                    : searchProvider.searchResults.data!.isEmpty
-                        ? const SizedBox.shrink()
-                        : ListView.builder(
-                            itemCount:
-                                searchProvider.searchResults.data!.length,
-                            itemBuilder: (context, index) {
-                              final song =
-                                  searchProvider.searchResults.data![index];
-                              return SongHorizontalSquareContainer(
-                                  song: song,
-                                  onPress: () {
-                                    musicPlayerViewmodel.playlist =
-                                        searchProvider.searchResults.data!;
-                                    musicPlayerViewmodel.currentIndex = index;
+              // Expanded(
+              //   child: searchProvider.searchResults.data == null
+              //       ? const SizedBox.shrink()
+              //       : searchProvider.searchResults.data!.isEmpty
+              //           ? const SizedBox.shrink()
+              //           : ListView.builder(
+              //               itemCount:
+              //                   searchProvider.searchResults.data!.length,
+              //               itemBuilder: (context, index) {
+              //                 final song =
+              //                     searchProvider.searchResults.data![index];
+              //                 return SongHorizontalSquareContainer(
+              //                     song: song,
+              //                     onPress: () {
+              //                       musicPlayerViewmodel.playlist =
+              //                           searchProvider.searchResults.data!;
+              //                       musicPlayerViewmodel.currentIndex = index;
 
-                                    Navigator.pushNamed(
-                                      context,
-                                      AppRoutes.musicPlayerScreen,
-                                    );
-                                  });
-                            },
-                          ),
-              ),
+              //                       Navigator.pushNamed(
+              //                         context,
+              //                         AppRoutes.musicPlayerScreen,
+              //                       );
+              //                     });
+              //               },
+              //             ),
+              // ),
             ],
           ),
         ),
