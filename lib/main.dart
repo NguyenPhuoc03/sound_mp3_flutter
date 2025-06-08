@@ -4,7 +4,6 @@ import 'package:sound_mp3/configs/theme.dart';
 import 'package:sound_mp3/viewmodel/albums_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/artists_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/auth_viewmodel.dart';
-import 'package:sound_mp3/viewmodel/favorite_transaction_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
@@ -26,7 +25,6 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ArtistsViewmodel()),
         ChangeNotifierProvider(create: (_) => AlbumsViewmodel()),
         ChangeNotifierProvider(create: (_) => UsersViewmodel()),
-        ChangeNotifierProvider(create: (_) => FavoriteTransactionViewmodel()),
       ],
       child: const MyApp(),
     ),

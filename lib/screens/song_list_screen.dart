@@ -9,7 +9,6 @@ import 'package:sound_mp3/viewmodel/music_player_viewmodel.dart';
 import 'package:sound_mp3/viewmodel/songs_viewmodel.dart';
 import 'package:sound_mp3/routes/app_routes.dart';
 import 'package:sound_mp3/screens/widgets/containers/song_horizontal_square_container.dart';
-import 'package:sound_mp3/screens/widgets/other/loading_display.dart';
 import 'package:sound_mp3/screens/widgets/other/mini_player_widget.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
 

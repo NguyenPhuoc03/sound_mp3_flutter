@@ -224,6 +224,22 @@ class SongsViewmodel with ChangeNotifier {
     notifyListeners();
   }
 
+  // like unlike song
+  // thay doi trang thai cua like song
+  Future<void> toggleFavoritedSong(bool isLiked, String songId) async {
+    String? accessToken =
+        await SecureStorageHelper.readValue(AppStrings.accessToken);
+    if (accessToken == null) {
+      throw Exception("fail");
+    }
+    if (isLiked) {
+      await _songsService.unlikeSong(accessToken, songId);
+    } else {
+      await _songsService.likeSong(accessToken, songId);
+    }
+    notifyListeners();
+  }
+
   // // search name
   Future<void> searchSongs(String query) async {
     // try {

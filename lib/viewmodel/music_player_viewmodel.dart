@@ -3,13 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:sound_mp3/data/data_local/secure_storage_helper.dart';
 import 'package:sound_mp3/data/models/songs.dart';
 import 'package:sound_mp3/services/history_service.dart';
-import 'package:sound_mp3/services/users_service.dart';
+import 'package:sound_mp3/services/songs_service.dart';
 import 'package:sound_mp3/utils/app_strings.dart';
-import 'package:sound_mp3/utils/shared_prefs.dart';
-import 'package:sound_mp3/utils/time_format.dart';
 
 class MusicPlayerViewmodel extends ChangeNotifier {
-  final UsersService _usersService = UsersService();
+  final SongsService _songsService = SongsService();
   final HistoryService _historyService = HistoryService();
   List<Songs> _playlist = [];
   int? _currentIndex;
@@ -183,8 +181,12 @@ class MusicPlayerViewmodel extends ChangeNotifier {
 
   Future<void> getIsLikedSong(String songId) async {
     try {
-      String userId = await SharedPrefs.getUserId(AppStrings.uid);
-      _isLiked = await _usersService.isSongLiked(userId, songId);
+      String? accessToken =
+          await SecureStorageHelper.readValue(AppStrings.accessToken);
+      if (accessToken == null) {
+        throw Exception("fail");
+      }
+      _isLiked = await _songsService.isSongLiked(accessToken, songId);
     } catch (error) {
       print("err in viewmodel");
     } finally {
